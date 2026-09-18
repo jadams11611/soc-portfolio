@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOC Analyst Portfolio – Dorita Jamein Adams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1c2433; --muted:#5b6678; --rule:#dfe4ec;
+  --navy:#1B2A4A; --teal:#2A7F8F; --sev:#c2362b; --panel:#f5f7fa;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121822; --ink:#e4e8ef; --muted:#9aa6b8; --rule:#2a3445;
+    --navy:#a9c1ea; --teal:#5fc0cf; --sev:#ef6b5e; --panel:#1a2230;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121822; --ink:#e4e8ef; --muted:#9aa6b8; --rule:#2a3445;
+  --navy:#a9c1ea; --teal:#5fc0cf; --sev:#ef6b5e; --panel:#1a2230;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:56px 24px 72px}
+header{border-bottom:3px solid var(--navy);padding-bottom:28px;margin-bottom:40px}
+h1{font-size:clamp(28px,5vw,38px);line-height:1.15;margin:0 0 6px;color:var(--navy);font-weight:700;letter-spacing:-0.01em}
+.role{font-size:18px;color:var(--teal);font-weight:600;margin:0 0 16px}
+.intro{color:var(--muted);margin:0 0 12px;max-width:62ch}
+.contact a{color:var(--teal);font-weight:500}
+.skills{margin:0 0 48px}
+.skills h2,.case h2{font-size:22px;color:var(--navy);margin:0 0 12px;line-height:1.3}
+.skills ul{margin:0;padding-left:20px}
+.skills li{margin-bottom:6px}
+.case{border-left:4px solid var(--sev);padding:4px 0 4px 22px;margin:0 0 48px}
+.meta{color:var(--muted);font-size:14px;margin:0 0 14px}
+.meta strong{color:var(--ink);font-weight:600}
+.case p{margin:0 0 12px;max-width:68ch}
+.case h3{font-size:15px;color:var(--navy);margin:18px 0 8px;font-weight:600}
+.iocs{overflow-x:auto;background:var(--panel);border-radius:4px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;padding:14px 16px;font-size:14px;min-width:420px}
+dt{color:var(--muted)}
+dd{margin:0;font-family:"IBM Plex Mono",Consolas,monospace;font-size:13px;word-break:break-word}
+footer{border-top:1px solid var(--rule);padding-top:16px;color:var(--muted);font-size:13px}
+a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media print{main{padding:20px}.case{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Dorita Jamein Adams</h1>
+  <p class="role">SOC Analyst Portfolio</p>
+  <p class="intro">Self-directed investigation work completed in the Axis Security SOC Lab, a training simulation. Each case shows how I triage an alert: what fired, what the evidence says, how it maps to MITRE ATT&amp;CK, and what I recommend. All names, hosts, and indicators are simulated.</p>
+  <p class="contact"><a href="mailto:jameinadams@icloud.com">jameinadams@icloud.com</a></p>
+</header>
+
+<section class="skills">
+  <h2>What these cases demonstrate</h2>
+  <ul>
+    <li>Alert triage and escalation decisions based on evidence, not the alert title</li>
+    <li>Email authentication analysis (SPF, DKIM) and phishing indicator review</li>
+    <li>Windows logon event analysis: logon types, subject fields, and baseline deviations</li>
+    <li>Mapping activity to MITRE ATT&amp;CK and the kill chain</li>
+    <li>Blast-radius assessment and concrete containment recommendations</li>
+  </ul>
+</section>
+
+<article class="case">
+  <h2>Phishing link clicked by a finance user</h2>
+  <p class="meta"><strong>T1566.001</strong> Phishing: Spearphishing Link. Email domain, Tier 1. Lab quality rating: Strong.</p>
+  <p>Proofpoint Email Security Gateway alerted after Martha Johnson, a Senior Accounts Payable Specialist with access to payment processing systems, clicked a URL in a flagged email at 09:42:17 UTC. The message came from payrollnoreply@acme-corp[.]com, a lookalike of the legitimate acmecorp.com. SPF failed and DKIM returned none, so the email was not sent from an authorized server.</p>
+  <p>The link, hxxp://acmecorp-secure[.]xyz/login, was flagged as suspicious and appears built to harvest corporate credentials. The subject line, "ACTION REQUIRED: Update your direct deposit information," fits BEC and payroll-redirect patterns. The user's role raises the stakes: she can authorize wire transfers up to $25,000 and update vendor banking details.</p>
+  <p>Kill chain stage is Initial Access. Given the spoofed domain, failed authentication checks, suspicious destination, and high-risk user, I escalated for immediate investigation. Next steps are a user interview and an authentication log review to determine whether credentials were entered and used.</p>
+  <h3>Indicators</h3>
+  <div class="iocs"><dl>
+    <dt>User</dt><dd>m.johnson@acmecorp.com</dd>
+    <dt>Sender</dt><dd>payrollnoreply@acme-corp[.]com</dd>
+    <dt>Destination</dt><dd>hxxp://acmecorp-secure[.]xyz/login</dd>
+  </dl></div>
+</article>
+
+<article class="case">
+  <h2>Service account used for an interactive login</h2>
+  <p class="meta"><strong>T1078.002</strong> Valid Accounts: Domain Accounts. Identity domain, Tier 1. Lab quality rating: Strong.</p>
+  <p>Service account ACMECORP\SVC_SQLBackup performed its first-ever interactive logon (Type 2) at 03:02 UTC on FINANCE-WKS-007. Three things are wrong: the host (a workstation, not BACKUP-SRV-01), the time (03:02 instead of the 02:00 scheduled job), and the logon type (Type 2 instead of Type 4 or 5). The subject field shows ACMECORP\j.doe initiated the session, meaning a person typed the service account password, which is a credential-sharing violation and a PAM bypass.</p>
+  <p>Fourteen consecutive failed logons preceded the success, consistent with password guessing against this account. Pivoting to the authentication logs shows a related sign-in for the same account from a Tor exit node geolocating to Kyiv, far outside its normal Chicago-area activity. That sign-in used legacy SMTP authentication, which is not covered by Conditional Access, so MFA was never challenged.</p>
+  <p>Post-login activity shows reconnaissance and persistence: <code>whoami /all</code>, <code>net group "Domain Admins" /domain</code>, an attempted <code>net use \\DC01\C$</code> (lateral movement to the domain controller, blocked), and creation of a scheduled task named "SQLBackupMaint." The password is 847 days old against a 90-day policy. The account holds SQL sysadmin on PROD-DB-01/02 and local admin on three hosts, so the blast radius is full production database compromise.</p>
+  <p>Recommendations: rotate the password immediately and disable the account, isolate FINANCE-WKS-007 and j.doe's session, hunt for the scheduled task across the fleet, review backups for shadow-copy tampering, and engage incident response.</p>
+  <h3>Indicators</h3>
+  <div class="iocs"><dl>
+    <dt>Account</dt><dd>ACMECORP\SVC_SQLBackup (subject: ACMECORP\j.doe)</dd>
+    <dt>Host</dt><dd>FINANCE-WKS-007 (10.10.4.22)</dd>
+    <dt>Target</dt><dd>DC01</dd>
+    <dt>Process chain</dt><dd>explorer.exe → cmd.exe / powershell.exe (whoami.exe, net.exe, schtasks.exe)</dd>
+    <dt>Persistence</dt><dd>Scheduled task "SQLBackupMaint"</dd>
+  </dl></div>
+</article>
+
+<footer>Cases completed in the Axis Security SOC Lab training simulation, 2026.</footer>
+</main>
+</body>
+</html>
